@@ -2,17 +2,25 @@
 ## Fall 2021
 ## Project 1: A "data story" on the history of philosophy
 
-<img src="figs/100126-the-glass.jpeg" width="500">
+
+<img src="https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/XGQ6C74PIM7GDJUNQW2GMXYV3M.jpg" width="250">
+
 
 ### [Project Description](doc/)
 This is the first and only *individual* (as opposed to *team*) project this semester. 
 
 Term: Fall 2021
 
-+ Projec title: Lorem ipsum dolor sit amet
-+ This project is conducted by Dan Harvey | DYH2111
++ Project title: Gender and Philosophy through the Ages
++ This project is conducted by Dan Harvey | dyh2111@columbia.edu
 
-+ Project summary: [a short summary] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ Project summary: I wanted to take a look at how gender plays a role in these philosopher's minds and throughout the ages, so I wanted to answer these simple questions by evaluating our data set against masculine, feminine, and neutral gender pronouns and their occurrences throughout the ages and by author.
+
+I found myself asking the following questions:
+
+- Does the use of feminine pronouns increase as the years go by?
+- Does the use of masculine pronouns decrease as the years go by?
+- Are certain authors more likely to use feminine, masculine, or neutral pronouns?
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
@@ -26,3 +34,21 @@ proj/
 ```
 
 Please see each subfolder for a README file.
+
+### Data Source
+
+The data source that we used in this project was downloaded here on September 23,2021: https://www.kaggle.com/kouroshalizadeh/history-of-philosophy.
+
+### Methodolgy
+
+We divided pronouns into 3 categories:
+
+- Feminine: she, her, hers, herself
+- Masculine: him, he, his, himself
+- Neutral: them, they, their
+
+We then took note to see how often they were used with each author in their texts in the data set and the amount these were used over the years.
+
+### Findings
+
+
