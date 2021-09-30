@@ -1,0 +1,184 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# Applied Data Science @ Columbia
+## Fall 2021
+## Project 1: A "data story" on the history of philosophy
+output=github_document
+
+
+<img src="https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/XGQ6C74PIM7GDJUNQW2GMXYV3M.jpg" width="250">
+
+
+### [Project Description](doc/)
+This is the first and only *individual* (as opposed to *team*) project this semester. 
+
+Term: Fall 2021
+
++ Project title: Gender and Philosophy through the Ages
++ This project is conducted by Dan Harvey | dyh2111@columbia.edu
+
++ Project summary: As gender equality and respect of identity has become an important topic, I wanted to take a look at how gender plays a role in these philosopher's minds and throughout the ages, so I wanted to answer these simple questions by evaluating our data set against masculine, feminine, and neutral gender pronouns and their occurrences.
+
+## This folder is orgarnized as follows.
+Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). T
+
+```
+proj/
+├── lib/
+├── data/
+├── doc/
+├── figs/
+└── output/
+```
+
+Please see each subfolder for a README file.
+
+### Data Source
+
+The data source that we used in this project was downloaded here on September 23,2021: https://www.kaggle.com/kouroshalizadeh/history-of-philosophy.
+
+### Methodolgy
+
+We divided pronouns into 3 categories:
+
+- Feminine: she, her, hers, herself, female, girl, women, woman
+- Masculine: him, he, his, himself, male, boy, men, man
+- Neutral: them, they, their
+
+We then took note to see how often they were used with each author in their texts in the data set and the amount these were used over the years.
+
+### Findings
+
+This report was prepared with the following environmental settings.
+```{r}
+print(R.version)
+```
+
+```{r}
+# Load Libraries
+
+library("tidyverse")
+library("readr")
+library("ggplot2")
+library("wordcloud2")
+library("wordcloud")
+library("tm")
+library("plyr")
+
+#Make sure your working directory is set
+setwd("~/Documents/GitHub/Fall2021-Project1-DH2111")
+
+#import raw data
+philosophy_data <- read_csv("data/philosophy_data.csv", 
+    col_types = cols(title = col_skip(), 
+        sentence_spacy = col_skip(), sentence_str = col_skip(), 
+        corpus_edition_date = col_skip(), 
+        lemmatized_str = col_skip()))
+        
+#Set pronoun specifications
+feminine  <- "she | her | hers | herself | female | girl | women | woman"
+masculine <- "him | he | his | himself | male | boy | men | man"
+neutral   <- "them | they | their"
+
+#Subset data to only contain gender related
+feminine_data<-philosophy_data%>%filter(grepl(feminine,sentence_lowered))
+masculine_data<-philosophy_data%>%filter(grepl(masculine,sentence_lowered))
+neutral_data<-philosophy_data%>%filter(grepl(neutral,sentence_lowered))
+  
+rowsByGender <- data.frame(Gender = c("Masculine", "Feminine", "Neutral"),
+                 Entries = c(nrow(masculine_data), nrow(feminine_data), nrow(neutral_data)))
+```
+## Preliminary Overview
+
+First, Lets take an overall look at how the Corpus with gender references are divided upon the 3 camps of gender references: 
+
+- Feminine
+- Masculine
+- Neutral
+
+```{r}
+ggplot(rowsByGender, aes(x=Gender, y = Entries)) +  
+  geom_bar(stat="identity", fill = c("blue", "pink", "purple"))
+```
+
+
+We immediately see that Masculine and Neutral references are orders of magnitudes greater represented in these texts.
+
+To get a visual idea of what pronouns are most dominant in these 3 camps, we will refer to these word clouds:
+
+**Feminine References**
+```{r warning = FALSE}
+
+feminineWordCount <- data.frame(Gender = c("she", "her", "hers", "herself" , "female",  "girl" , "women" , "woman"),
+                 Entries = c(str_count(feminine_data[6],"she")
+, str_count(feminine_data[6],"her")
+, str_count(feminine_data[6],"hers")
+, str_count(feminine_data[6],"herself")
+, str_count(feminine_data[6],"female")
+, str_count(feminine_data[6],"girl")
+, str_count(feminine_data[6],"women")
+, str_count(feminine_data[6],"woman")
+))
+
+wordcloud2(data = feminineWordCount, size=1)
+
+feminineWordCount
+```
+
+Interestingly, we see find that "her" is used the most, almost double that of "she".
+
+**Masculine References**
+
+```{r warning = FALSE}
+
+masculineWordCount <- data.frame(Gender = c("him", "he", "his","himself","male","boy","men","man"),
+                 Entries = c( str_count(masculine_data[6],"him")
+, str_count(masculine_data[6],"he")
+, str_count(masculine_data[6],"his")
+, str_count(masculine_data[6],"himself")
+, str_count(masculine_data[6],"male")
+, str_count(masculine_data[6],"boy")
+, str_count(masculine_data[6],"men")
+, str_count(masculine_data[6],"man")
+))
+
+wordcloud2(data = masculineWordCount, size=1)
+
+masculineWordCount
+```
+
+Here, "he" is used the most, overwhelmingly more than "man".
+
+**Neutral References**
+
+
+```{r warning = FALSE}
+
+neutralWordCount <- data.frame(Gender = c("them", "they", "their"),
+                 Entries = c( str_count(neutral_data[6],"them")
+, str_count(neutral_data[6],"they")
+, str_count(neutral_data[6],"their")
+))
+
+wordcloud2(data = neutralWordCount, size=1)
+
+neutralWordCount
+```
+
+With regard to the neutral terms, we see they are not as far off from each other as the gender specific references.
+
+
+**Comparing the the frequency of individual Pronouns**
+```{r warning = FALSE}
+combinedWordCounts <- rbind(neutralWordCount, masculineWordCount,feminineWordCount)
+
+ggplot(combinedWordCounts, aes(x=Gender, y = Entries)) +  
+  geom_bar(stat="identity")
+
+combinedWordCounts
+```
+
+
